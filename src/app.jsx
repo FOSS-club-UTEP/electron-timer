@@ -5,6 +5,13 @@ import alarmSoundResource from './assets/audio/alarm.wav'
 const App = () => {
     const [inputTime, setInputTime] = useState('');
     const [timeLeft, setTimeLeft] = useState(null);
+    
+    const alarmSound = new Audio(alarmSoundResource)
+    const alarmStopFunc = () => {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+        setTimeLeft(null);
+    };
 
     useEffect(() => {
         let timer;
@@ -15,12 +22,14 @@ const App = () => {
         } else if (timeLeft === 0) {
             clearInterval(timer);
 
-            const alarmSound = new Audio(alarmSoundResource)
             alarmSound.play()
-            new window.Notification("Timer done!").onclick = () => {
-                alarmSound.pause();
+            alarmSound.addEventListener('ended', () => {
                 alarmSound.currentTime = 0;
-            };
+                alarmSound.play();
+            });
+
+            const alarmNotif = new window.Notification("Timer done!", {body: 'Click to stop alarm.'})
+            alarmNotif.onclick = alarmStopFunc;
         }
         return () => clearInterval(timer);
     }, [timeLeft]);
@@ -44,6 +53,9 @@ const App = () => {
             <button onClick={startTimer}>Start</button>
             {timeLeft !== null && (
                 <h2 style={{ marginTop: '20px' }}>{timeLeft} seconds left</h2>
+            )}
+            {timeLeft !== null && timeLeft === 0 && (
+                <button onClick={alarmStopFunc}>Stop alarm sound.</button>
             )}
         </div>
     );
