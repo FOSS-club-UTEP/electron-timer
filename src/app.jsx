@@ -13,6 +13,8 @@ const App = () => {
             }, 1000);
         } else if (timeLeft === 0) {
             clearInterval(timer);
+
+            new window.Notification("Timer done!");
         }
         return () => clearInterval(timer);
     }, [timeLeft]);
