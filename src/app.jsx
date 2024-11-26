@@ -4,6 +4,10 @@ import alarmSoundResource from './assets/audio/alarm.wav'
 
 const App = () => {
     const [inputTime, setInputTime] = useState('');
+    
+    // none means timer hasn't started
+    // 0 means timer is done and waiting to be dismissed
+    // > 0 means timer is running
     const [timeLeft, setTimeLeft] = useState(null);
     
     const alarmSound = new Audio(alarmSoundResource)
