@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import alarmSoundResource from './assets/audio/alarm.wav'
 
 const App = () => {
     const [inputTime, setInputTime] = useState('');
@@ -14,7 +15,12 @@ const App = () => {
         } else if (timeLeft === 0) {
             clearInterval(timer);
 
-            new window.Notification("Timer done!");
+            const alarmSound = new Audio(alarmSoundResource)
+            alarmSound.play()
+            new window.Notification("Timer done!").onclick = () => {
+                alarmSound.pause();
+                alarmSound.currentTime = 0;
+            };
         }
         return () => clearInterval(timer);
     }, [timeLeft]);

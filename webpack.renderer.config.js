@@ -8,6 +8,12 @@ rules.push({
 module.exports = {
   // Put your normal webpack config below here
   module: {
-    rules,
+    rules: [
+        ...rules,
+        {
+          test: /\.(png|svg|jpg|jpeg|gif|ogg|mp3|wav)$/i,
+          type: 'asset/resource',
+        },
+    ],
   },
 };
